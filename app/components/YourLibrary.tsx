@@ -39,7 +39,7 @@ export default function YourLibrary({
           >
             <path d="M20.332 20L16.844 4M12 20V4M6 20V4"></path>
           </svg>
-          {isExpanded && <span>Your library</span>}
+          {isExpanded && <b>Your library</b>}
         </button>
       </div>
       <div>
