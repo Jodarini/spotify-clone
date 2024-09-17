@@ -97,7 +97,7 @@ export default function UserLibrary({
         <div
           key={playlist.id}
           onClick={(e) => handleClick(e, playlist.type, playlist.id)}
-          className="w-full rounded from-white/0 to-white/5 p-2 hover:cursor-pointer hover:bg-gradient-to-r active:bg-black"
+          className="w-full rounded from-white/0 to-white/5 py-2 hover:cursor-pointer hover:bg-gradient-to-r active:bg-black"
         >
           <div className="flex w-full items-center justify-between overflow-hidden">
             <div className="flex w-max flex-row items-center gap-3 overflow-hidden">

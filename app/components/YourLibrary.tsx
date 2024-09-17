@@ -16,12 +16,12 @@ export default function YourLibrary({
 
   return (
     <Card
-      className={`flex h-screen-minus-5rem flex-col overflow-y-scroll md:h-full ${!isExpanded ? "w-max" : ""}`}
+      className={`${!isExpanded ? "w-max" : ""} flex h-screen-minus-5rem flex-col overflow-y-scroll md:h-full`}
     >
-      <div className="flex items-center gap-2 text-gray-400">
+      <div className="flex items-center gap-2 px-2 text-gray-400">
         <button
           onClick={handleExpandLibrary}
-          className="flex gap-2  hover:text-white active:text-zinc-300 focus:bg-red"
+          className="focus:bg-red flex items-center  gap-2 hover:text-white active:text-zinc-300"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -31,8 +31,8 @@ export default function YourLibrary({
             strokeLinecap="round"
             strokeLinejoin="round"
             strokeMiterlimit="10"
-            width="24"
-            height="24"
+            width="28"
+            height="28"
             viewBox="0 0 24 24"
             data-icon="SvgLibrary"
             aria-hidden="true"
