@@ -19,7 +19,10 @@ export default function YourLibrary({
       className={`flex h-screen-minus-5rem flex-col overflow-y-scroll md:h-full ${!isExpanded ? "w-max" : ""}`}
     >
       <div className="flex items-center gap-2 text-gray-400">
-        <button onClick={handleExpandLibrary} className="flex gap-2">
+        <button
+          onClick={handleExpandLibrary}
+          className="flex gap-2  hover:text-white active:text-zinc-300 focus:bg-red"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
