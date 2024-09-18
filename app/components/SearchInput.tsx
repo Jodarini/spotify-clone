@@ -12,7 +12,7 @@ export default function SearchInput({ placeholder }: { placeholder?: string }) {
     if (path.includes("/search/")) {
       router.push(query);
     } else {
-      router.push(`./search/${query}`);
+      router.push(`/search/${query}`);
     }
   };
   return (
