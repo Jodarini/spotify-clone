@@ -38,7 +38,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
             </svg>
           </div>
         )}
-        <div className="xs:order-1 flex flex-col gap-4">
+        <div className="xs:order-1 flex flex-col gap-4 w-full">
           <span className="xs:order-2 capitalize">{album.type}</span>
           <h2 className="sm:text:sm xs:order-1 font-bold md:text-xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
             {album.name}

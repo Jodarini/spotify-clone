@@ -18,12 +18,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const response = await getMostCommonColor(playlist.images[0].url);
 
   return (
-    <div
-      className="flex flex-col overflow-x-hidden overflow-y-scroll"
-      // style={{
-      //   background: `linear-gradient(to bottom, ${response} 0%, ${response}80 20%, transparent 100%)`,
-      // }}
-    >
+    <div className="flex flex-col overflow-x-hidden overflow-y-scroll">
       <div
         className="flex w-full flex-col items-center gap-4 md:flex-row md:items-end"
         style={{
