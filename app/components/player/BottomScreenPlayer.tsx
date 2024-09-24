@@ -1,4 +1,8 @@
-import { skipToNext, skipToPrev } from "@/app/api/spotify/spotify-api";
+import {
+  getRecentlyPlayed,
+  skipToNext,
+  skipToPrev,
+} from "@/app/api/spotify/spotify-api";
 import { PlayerContext } from "@/app/context/appContext";
 import { convertMsToTimestamp } from "@/app/lib/utils/convertMsToTimestamp";
 import Image from "next/image";

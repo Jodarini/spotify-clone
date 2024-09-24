@@ -1,6 +1,7 @@
 import { getToken } from "@/app/api/clerk/getToken";
 import { getAlbum, getCurrentUser } from "@/app/api/spotify/spotify-api";
 import Track from "@/app/components/track/Track";
+import { getMostCommonColor } from "@/app/lib/utils/getCommonColor";
 import Image from "next/image";
 
 export default async function Page({ params }: { params: { slug: string } }) {
@@ -12,8 +13,15 @@ export default async function Page({ params }: { params: { slug: string } }) {
     return <div>No album found</div>;
   }
 
+  const contextColor = await getMostCommonColor(album.images[0].url);
+
   return (
-    <div className="flex flex-col gap-6 overflow-x-hidden overflow-y-scroll">
+    <div
+      className="flex flex-col gap-6 overflow-x-hidden overflow-y-scroll"
+      style={{
+        background: `linear-gradient(to bottom, ${contextColor} 0%, ${contextColor}40 20%, transparent 40%)`,
+      }}
+    >
       <div className="flex w-full flex-col items-center gap-4 md:flex-row md:items-end">
         {album.images.length > 0 ? (
           <Image
