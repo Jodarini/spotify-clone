@@ -55,11 +55,20 @@ export default async function Page({ params }: { params: { slug: string } }) {
           <h2 className="sm:text:sm xs:order-1 font-bold md:text-xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
             {album.name}
           </h2>
-          {artist && (
-            <Link href={`../artist/${artist.id}`} className="hover:underline">
-              {artist?.name}
-            </Link>
-          )}
+          <div>
+            {album.artists.map((artist, idx) => (
+              <>
+                <Link
+                  key={artist.id}
+                  href={`../artist/${artist.id}`}
+                  className="hover:underline"
+                >
+                  {artist?.name}
+                </Link>
+                {idx + 1 < album.artists.length && ", "}
+              </>
+            ))}
+          </div>
         </div>
       </div>
       <div className="flex w-full flex-col text-sm text-zinc-400">
