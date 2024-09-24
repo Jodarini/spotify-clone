@@ -4,11 +4,14 @@ import ListTopBar from "@/app/components/ListTopBar";
 import Track from "@/app/components/track/Track";
 import { getMostCommonColor } from "@/app/lib/utils/getCommonColor";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const currentUser = await getCurrentUser();
   const album = await getAlbum(params.slug, currentUser!.country);
   const token = await getToken();
+  const artist = album?.artists[0];
+  console.log({ artist });
 
   if (!album) {
     return <div>No album found</div>;
@@ -52,6 +55,11 @@ export default async function Page({ params }: { params: { slug: string } }) {
           <h2 className="sm:text:sm xs:order-1 font-bold md:text-xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
             {album.name}
           </h2>
+          {artist && (
+            <Link href={`../artist/${artist.id}`} className="hover:underline">
+              {artist?.name}
+            </Link>
+          )}
         </div>
       </div>
       <div className="flex w-full flex-col text-sm text-zinc-400">
