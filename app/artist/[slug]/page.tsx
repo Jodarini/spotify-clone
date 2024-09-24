@@ -18,7 +18,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const uris = topTracks.map((track) => track.uri);
 
   return (
-    <div className="flex flex-col gap-6 overflow-x-hidden overflow-y-scroll">
+    <div className="flex flex-col gap-6 overflow-x-hidden overflow-y-scroll p-5">
       {artist && (
         <div className="flex w-full flex-col items-center gap-4 md:flex-row md:items-end">
           <Image

@@ -1,5 +1,6 @@
 import { getToken } from "@/app/api/clerk/getToken";
 import { getAlbum, getCurrentUser } from "@/app/api/spotify/spotify-api";
+import ListTopBar from "@/app/components/ListTopBar";
 import Track from "@/app/components/track/Track";
 import { getMostCommonColor } from "@/app/lib/utils/getCommonColor";
 import Image from "next/image";
@@ -25,7 +26,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
       <div className="flex w-full flex-col items-center gap-4 md:flex-row md:items-end">
         {album.images.length > 0 ? (
           <Image
-            className="xs:order-2 rounded shadow"
+            className="xs:order-2 rounded shadow-md"
             width={224}
             height={224}
             src={album.images[0].url}
@@ -54,6 +55,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
         </div>
       </div>
       <div className="flex w-full flex-col text-sm text-zinc-400">
+        <ListTopBar token={token} playlistUri={album.uri} />
         <h4 className="text-4xl font-bold text-white">Tracks</h4>
         {album.tracks.items.map((track, index: number) => (
           <Track
