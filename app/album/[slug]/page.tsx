@@ -17,7 +17,7 @@ export default async function Page({ params }: { params: { slug: string } }) {
 
   return (
     <div
-      className="flex flex-col gap-6 overflow-x-hidden overflow-y-scroll"
+      className="flex flex-col gap-6 overflow-x-hidden overflow-y-scroll p-5"
       style={{
         background: `linear-gradient(to bottom, ${contextColor} 0%, ${contextColor}40 20%, transparent 40%)`,
       }}

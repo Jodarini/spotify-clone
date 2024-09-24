@@ -18,13 +18,13 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const contextColor = await getMostCommonColor(playlist.images[0].url);
 
   return (
-    <div className="flex flex-col overflow-x-hidden overflow-y-scroll">
-      <div
-        className="flex w-full flex-col items-center gap-4 md:flex-row md:items-end"
-        style={{
-          background: `linear-gradient(to bottom, ${contextColor} 0%, ${contextColor}40 20%, transparent 40%)`,
-        }}
-      >
+    <div
+      className="flex flex-col overflow-x-hidden overflow-y-scroll p-5"
+      style={{
+        background: `linear-gradient(to bottom, ${contextColor} 0%, ${contextColor}40 20%, transparent 40%)`,
+      }}
+    >
+      <div className="flex w-full flex-col items-center gap-4 md:flex-row md:items-end">
         <Image
           className="xs:order-2 rounded shadow"
           width={224}
