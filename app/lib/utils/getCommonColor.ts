@@ -42,9 +42,3 @@ export async function getMostCommonColor(imagePath: string): Promise<string> {
     throw error;
   }
 }
-
-// Example usage
-const imagePath = "./path/to/your/image.jpg";
-getMostCommonColor(imagePath)
-  .then((color) => console.log("Most common color:", color))
-  .catch((error) => console.error("Error:", error));
