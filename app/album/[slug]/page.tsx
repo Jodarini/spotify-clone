@@ -1,5 +1,10 @@
 import { getToken } from "@/app/api/clerk/getToken";
-import { getAlbum, getCurrentUser } from "@/app/api/spotify/spotify-api";
+import {
+  checkUsersSavedAlbums,
+  getAlbum,
+  getCurrentUser,
+} from "@/app/api/spotify/spotify-api";
+import AddToUser from "@/app/components/AddToUser";
 import ListTopBar from "@/app/components/ListTopBar";
 import Track from "@/app/components/track/Track";
 import { getMostCommonColor } from "@/app/lib/utils/getCommonColor";
@@ -10,8 +15,10 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const currentUser = await getCurrentUser();
   const album = await getAlbum(params.slug, currentUser!.country);
   const token = await getToken();
-  const artist = album?.artists[0];
-  console.log({ artist });
+  let isInLibrary: boolean[] = [false];
+  if (album) {
+    isInLibrary = await checkUsersSavedAlbums(album.id);
+  }
 
   if (!album) {
     return <div>No album found</div>;
@@ -72,7 +79,14 @@ export default async function Page({ params }: { params: { slug: string } }) {
         </div>
       </div>
       <div className="flex w-full flex-col text-sm text-zinc-400">
-        <ListTopBar token={token} playlistUri={album.uri} />
+        <div className="flex gap-2 items-center">
+          <ListTopBar token={token} playlistUri={album.uri} />
+          <AddToUser
+            isInLibrary={isInLibrary[0]}
+            token={token}
+            context={album.id}
+          />
+        </div>
         <h4 className="text-4xl font-bold text-white">Tracks</h4>
         {album.tracks.items.map((track, index: number) => (
           <Track
