@@ -1,10 +1,12 @@
 "use client";
 
+import { revalidatePath } from "next/cache";
 import {
   removeAlbumforCurrentUser,
   saveAlbumsForCurrentUser,
 } from "../api/spotify/spotify-api";
 import Button from "./Button";
+import { useState } from "react";
 
 export default function AddToUser({
   token,
@@ -15,10 +17,20 @@ export default function AddToUser({
   context: string;
   isInLibrary: boolean;
 }) {
+  const [inLibrary, setInLibrary] = useState(isInLibrary);
+  const removeAlbum = () => {
+    removeAlbumforCurrentUser(token, context);
+    setInLibrary(false);
+  };
+
+  const addAlbum = () => {
+    saveAlbumsForCurrentUser(token, context);
+    setInLibrary(true);
+  };
   return (
     <>
-      {isInLibrary ? (
-        <Button onClick={() => removeAlbumforCurrentUser(token, context)}>
+      {inLibrary ? (
+        <Button onClick={removeAlbum}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
@@ -36,7 +48,7 @@ export default function AddToUser({
           </svg>
         </Button>
       ) : (
-        <Button onClick={() => saveAlbumsForCurrentUser(token, context)}>
+        <Button onClick={addAlbum}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="32"
