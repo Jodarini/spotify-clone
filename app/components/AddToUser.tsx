@@ -1,32 +1,60 @@
 "use client";
 
-import { revalidatePath } from "next/cache";
 import {
+  checkUsersSavedAlbums,
   removeAlbumforCurrentUser,
   saveAlbumsForCurrentUser,
 } from "../api/spotify/spotify-api";
 import Button from "./Button";
 import { useState } from "react";
+import Loading from "./Loading";
 
 export default function AddToUser({
   token,
-  context,
   isInLibrary,
+  context,
 }: {
   token: string;
-  context: string;
   isInLibrary: boolean;
+  context: string;
 }) {
+  const [isLoading, setIsLoading] = useState(false);
   const [inLibrary, setInLibrary] = useState(isInLibrary);
-  const removeAlbum = () => {
-    removeAlbumforCurrentUser(token, context);
-    setInLibrary(false);
+
+  const removeAlbum = async () => {
+    setIsLoading(true);
+    try {
+      const res = await removeAlbumforCurrentUser(token, context);
+      if (res?.ok) {
+        setInLibrary(false);
+      }
+    } catch (e) {
+      setInLibrary(true);
+      console.log(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const addAlbum = () => {
-    saveAlbumsForCurrentUser(token, context);
-    setInLibrary(true);
+  const addAlbum = async () => {
+    setIsLoading(true);
+    try {
+      const res = await saveAlbumsForCurrentUser(token, context);
+      if (res?.ok) {
+        setInLibrary(true);
+      }
+    } catch (e) {
+      setInLibrary(false);
+      console.error(e);
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
+
   return (
     <>
       {inLibrary ? (

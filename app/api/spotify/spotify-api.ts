@@ -79,7 +79,12 @@ export const postPlayerApi = async (url: string, token: string) => {
       "Content-Type": "application/json",
     },
   };
-  fetch(url, requestOptions);
+  try {
+    const res = await fetch(url, requestOptions);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const deletePlayerApi = async (
@@ -101,7 +106,12 @@ export const deletePlayerApi = async (
       ids: [ids],
     }),
   };
-  fetch(url, requestOptions);
+  try {
+    const res = await fetch(url, requestOptions);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const fetchPlayerApi = async (
@@ -180,7 +190,12 @@ export const fetchPlayerApi = async (
     };
   }
 
-  fetch(url, requestOptions);
+  try {
+    const res = await fetch(url, requestOptions);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const seekPlayerApi = async (url: string, token: string) => {
