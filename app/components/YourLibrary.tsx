@@ -16,7 +16,7 @@ export default function YourLibrary({
 
   return (
     <Card
-      className={`${!isExpanded ? "w-max" : ""} flex flex-col  h-max md:h-full`}
+      className={`${!isExpanded ? "w-max" : "w-full min-w-full md:min-w-96"} flex flex-col  h-max md:h-full`}
     >
       <div className="flex items-center gap-2 px-2 text-gray-400">
         <button
