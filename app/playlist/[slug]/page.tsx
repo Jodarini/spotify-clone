@@ -15,21 +15,16 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const token = await getToken();
   const owner = await getUser(playlist.owner.id);
 
-  const response = await getMostCommonColor(playlist.images[0].url);
+  const contextColor = await getMostCommonColor(playlist.images[0].url);
 
   return (
     <div
-      className="flex flex-col overflow-x-hidden overflow-y-scroll"
-      // style={{
-      //   background: `linear-gradient(to bottom, ${response} 0%, ${response}80 20%, transparent 100%)`,
-      // }}
+      className="flex flex-col overflow-x-hidden overflow-y-scroll p-5"
+      style={{
+        background: `linear-gradient(to bottom, ${contextColor} 0%, ${contextColor}40 20%, transparent 40%)`,
+      }}
     >
-      <div
-        className="flex w-full flex-col items-center gap-4 md:flex-row md:items-end"
-        style={{
-          background: `linear-gradient(to bottom, ${response} 0%, ${response}80 50%, transparent 100%)`,
-        }}
-      >
+      <div className="flex w-full flex-col items-center gap-4 md:flex-row md:items-end">
         <Image
           className="xs:order-2 rounded shadow"
           width={224}

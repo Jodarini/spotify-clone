@@ -1,23 +1,42 @@
 import { getToken } from "@/app/api/clerk/getToken";
-import { getAlbum, getCurrentUser } from "@/app/api/spotify/spotify-api";
+import {
+  checkUsersSavedAlbums,
+  getAlbum,
+  getCurrentUser,
+} from "@/app/api/spotify/spotify-api";
+import AddToUser from "@/app/components/AddToUser";
+import ListTopBar from "@/app/components/ListTopBar";
 import Track from "@/app/components/track/Track";
+import { getMostCommonColor } from "@/app/lib/utils/getCommonColor";
 import Image from "next/image";
+import Link from "next/link";
 
 export default async function Page({ params }: { params: { slug: string } }) {
   const currentUser = await getCurrentUser();
   const album = await getAlbum(params.slug, currentUser!.country);
   const token = await getToken();
+  let isInLibrary: boolean[] = [false];
+  if (album) {
+    isInLibrary = await checkUsersSavedAlbums(album.id);
+  }
 
   if (!album) {
     return <div>No album found</div>;
   }
 
+  const contextColor = await getMostCommonColor(album.images[0].url);
+
   return (
-    <div className="flex flex-col gap-6 overflow-x-hidden overflow-y-scroll">
+    <div
+      className="flex flex-col gap-6 overflow-x-hidden overflow-y-scroll p-5"
+      style={{
+        background: `linear-gradient(to bottom, ${contextColor} 0%, ${contextColor}40 20%, transparent 40%)`,
+      }}
+    >
       <div className="flex w-full flex-col items-center gap-4 md:flex-row md:items-end">
         {album.images.length > 0 ? (
           <Image
-            className="xs:order-2 rounded shadow"
+            className="xs:order-2 rounded shadow-md"
             width={224}
             height={224}
             src={album.images[0].url}
@@ -38,14 +57,36 @@ export default async function Page({ params }: { params: { slug: string } }) {
             </svg>
           </div>
         )}
-        <div className="xs:order-1 flex flex-col gap-4">
+        <div className="xs:order-1 flex flex-col gap-4 w-full">
           <span className="xs:order-2 capitalize">{album.type}</span>
           <h2 className="sm:text:sm xs:order-1 font-bold md:text-xl lg:text-4xl xl:text-5xl 2xl:text-6xl">
             {album.name}
           </h2>
+          <div>
+            {album.artists.map((artist, idx) => (
+              <>
+                <Link
+                  key={artist.id}
+                  href={`../artist/${artist.id}`}
+                  className="hover:underline"
+                >
+                  {artist?.name}
+                </Link>
+                {idx + 1 < album.artists.length && ", "}
+              </>
+            ))}
+          </div>
         </div>
       </div>
       <div className="flex w-full flex-col text-sm text-zinc-400">
+        <div className="flex gap-2 items-center">
+          <ListTopBar token={token} playlistUri={album.uri} />
+          <AddToUser
+            isInLibrary={isInLibrary[0]}
+            token={token}
+            context={album.id}
+          />
+        </div>
         <h4 className="text-4xl font-bold text-white">Tracks</h4>
         {album.tracks.items.map((track, index: number) => (
           <Track

@@ -79,7 +79,39 @@ export const postPlayerApi = async (url: string, token: string) => {
       "Content-Type": "application/json",
     },
   };
-  fetch(url, requestOptions);
+  try {
+    const res = await fetch(url, requestOptions);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+export const deletePlayerApi = async (
+  url: string,
+  token: string,
+  ids: string,
+) => {
+  if (!token) {
+    return alert("NO TOKEN FOUND");
+  }
+
+  const requestOptions = {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      ids: [ids],
+    }),
+  };
+  try {
+    const res = await fetch(url, requestOptions);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const fetchPlayerApi = async (
@@ -88,12 +120,14 @@ export const fetchPlayerApi = async (
   track_number?: number,
   context_uri?: string,
   uris?: string[],
+  ids?: string,
 ) => {
   if (!token) {
     return null;
   }
   let requestOptions = {};
-  if (context_uri === undefined && uris === undefined) {
+
+  if (!context_uri && !uris && !ids) {
     requestOptions = {
       method: "PUT",
       headers: {
@@ -105,6 +139,20 @@ export const fetchPlayerApi = async (
       }),
     };
   }
+
+  if (ids) {
+    requestOptions = {
+      method: "PUT",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        ids: ids,
+      }),
+    };
+  }
+
   if (context_uri !== undefined) {
     requestOptions = {
       method: "PUT",
@@ -142,7 +190,12 @@ export const fetchPlayerApi = async (
     };
   }
 
-  fetch(url, requestOptions);
+  try {
+    const res = await fetch(url, requestOptions);
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 export const seekPlayerApi = async (url: string, token: string) => {
@@ -343,5 +396,36 @@ export async function setRepeatMode(
   return seekPlayerApi(
     `https://api.spotify.com/v1/me/player/repeat?state=${is_repeat}`,
     token,
+  );
+}
+
+export async function saveAlbumsForCurrentUser(
+  token: string,
+  albumIds: string,
+) {
+  return fetchPlayerApi(
+    `https://api.spotify.com/v1/me/albums?ids=${albumIds}`,
+    token,
+    undefined,
+    undefined,
+    undefined,
+    albumIds,
+  );
+}
+
+export async function removeAlbumforCurrentUser(
+  token: string,
+  albumIds: string,
+) {
+  return deletePlayerApi(
+    `https://api.spotify.com/v1/me/albums?ids=${albumIds}`,
+    token,
+    albumIds,
+  );
+}
+
+export async function checkUsersSavedAlbums(ids: string): Promise<boolean[]> {
+  return fetchWebApi(
+    `https://api.spotify.com/v1/me/albums/contains?ids=${ids}`,
   );
 }

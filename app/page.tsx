@@ -7,7 +7,6 @@ import { Item } from "./types/spotify";
 import Track from "./components/track/Track";
 import { getToken } from "./api/clerk/getToken";
 import TrackList from "./components/TrackSourceCard";
-import { getMostCommonColor } from "./lib/utils/getCommonColor";
 
 export default async function Page() {
   const { items: recentlyPlayed } = await getRecentlyPlayed(6);
