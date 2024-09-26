@@ -91,7 +91,7 @@ export default async function RootLayout({
                     </header>
                     <div className="relative w-full columns-auto grid-cols-[minmax(0,auto),auto] grid-rows-[minmax(0,1fr)] gap-2 bg-background px-2 pb-2 md:flex md:h-screen md:overflow-hidden">
                       <Dashboard />
-                      <Card className="w-full pb-16 md:pb-0 md:p-0">
+                      <Card className="pb-16 p-0 md:pb-0 md:p-0">
                         {children}
                       </Card>
                     </div>

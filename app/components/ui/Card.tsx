@@ -10,7 +10,7 @@ export default function Card({
 }) {
   return (
     <div
-      className={`flex w-full flex-col gap-5 overflow-hidden rounded-xl bg-background-alt p-2 md:p-5 ${className}`}
+      className={`flex w-full flex-col gap-5 overflow-hidden rounded-xl bg-background-alt p-4  ${className}`}
     >
       {children}
     </div>
