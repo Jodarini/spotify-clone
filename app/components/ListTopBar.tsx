@@ -5,8 +5,10 @@ import ResumePausePlaybackButton from "./track/ResumePausePlaybackButton";
 export default function ListTopBar({
   playlistUri,
   token,
+  uris,
 }: {
-  playlistUri: string;
+  playlistUri?: string;
+  uris?: string[];
   token: string;
 }) {
   return (
@@ -14,6 +16,7 @@ export default function ListTopBar({
       <ResumePausePlaybackButton
         token={token}
         pagePlaylistURI={playlistUri}
+        uris={uris}
         variant="GREEN"
       />
     </div>

@@ -1,18 +1,19 @@
 import { Jimp } from "jimp";
-
 export async function getMostCommonColor(imagePath: string): Promise<string> {
   try {
     // Read the image
     const image = await Jimp.read(imagePath);
+    const topTenthHeight = Math.floor(image.bitmap.height * 0.05);
 
     // Create a map to store color occurrences
     const colorMap: Map<string, number> = new Map();
 
     // Iterate through each pixel
-    image.scan(0, 0, image.bitmap.width, image.bitmap.height, (x, y, idx) => {
+    image.scan(0, 0, image.bitmap.width, topTenthHeight, (x, y, idx) => {
       const red = image.bitmap.data[idx + 0];
       const green = image.bitmap.data[idx + 1];
       const blue = image.bitmap.data[idx + 2];
+      if (red <= 10 && green <= 10 && blue <= 10) return;
 
       // Create a color key
       const colorKey = `${red},${green},${blue}`;
