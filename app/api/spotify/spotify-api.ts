@@ -14,6 +14,9 @@ import {
   CurrentUserPlaylists,
   FeaturedPlaylist,
   GetCurrentlyPlayingTrackResponse,
+  Track,
+  Tracks,
+  GetTracks,
 } from "@/app/types/spotify";
 import { getToken } from "../clerk/getToken";
 
@@ -281,7 +284,7 @@ export async function getPlaylist(
   );
 }
 
-export async function getTracks() {
+export async function getTracks(): Promise<GetTracks> {
   return await fetchWebApi("https://api.spotify.com/v1/me/tracks");
 }
 

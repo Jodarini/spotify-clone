@@ -109,6 +109,21 @@ export interface TopTracks {
   tracks: Track[];
 }
 
+export interface GetTracks {
+  href: string;
+  items: TrackItem[];
+  limit: number;
+  next: string;
+  offset: number;
+  previous: string;
+  total: number;
+}
+
+export interface TrackItem {
+  added_at: string;
+  track: Track;
+}
+
 export interface Album {
   album_type: string;
   total_tracks: number;
