@@ -6,6 +6,7 @@ import Track from "../track/Track";
 import { getToken } from "@/app/api/clerk/getToken";
 import ListTopBar from "../ListTopBar";
 import isPlaylist from "@/app/lib/utils/isPlaylist";
+import Link from "next/link";
 
 export default async function PlaylistTemplate({
   context,
@@ -58,10 +59,17 @@ export default async function PlaylistTemplate({
                   className="max-w-6 rounded-2xl"
                 />
               )}
-              {isPlaylist(context) && (
+              {isPlaylist(context) ? (
                 <span className="font-bold">{context.owner.display_name} </span>
+              ) : (
+                <Link
+                  href={context.artists[0].href}
+                  className="font-bold hover:underline"
+                >
+                  {context.artists[0].name}
+                </Link>
               )}
-              <span>{context.tracks.total} songs </span>
+              <span>• {context.tracks.total} songs </span>
             </div>
           </div>
         </div>
