@@ -1,19 +1,23 @@
 import { getUser } from "@/app/api/spotify/spotify-api";
 import { getMostCommonColor } from "@/app/lib/utils/getCommonColor";
-import { Playlist } from "@/app/types/spotify";
+import { Album, Playlist } from "@/app/types/spotify";
 import Image from "next/image";
 import Track from "../track/Track";
 import { getToken } from "@/app/api/clerk/getToken";
 import ListTopBar from "../ListTopBar";
+import isPlaylist from "@/app/lib/utils/isPlaylist";
 
 export default async function PlaylistTemplate({
   context,
 }: {
-  context: Playlist;
+  context: Playlist | Album;
 }) {
   const token = await getToken();
   const contextColor = await getMostCommonColor(context.images[0].url);
-  const owner = await getUser(context.owner.id);
+  let owner;
+  if (isPlaylist(context)) {
+    owner = await getUser(context.owner.id);
+  }
 
   return (
     <div className="flex flex-col overflow-x-hidden overflow-y-scroll">
@@ -38,7 +42,7 @@ export default async function PlaylistTemplate({
               {context.name}
             </h2>
             <span className="xs:order-3 italic text-gray-400">
-              {context.description}
+              {isPlaylist(context) && context.description}
             </span>
             <div className="flex flex-row gap-2">
               {owner?.images[0] && (
@@ -46,11 +50,17 @@ export default async function PlaylistTemplate({
                   width={24}
                   height={24}
                   src={owner?.images[0].url}
-                  alt={context.owner.display_name}
+                  alt={
+                    isPlaylist(context)
+                      ? context.owner.display_name
+                      : context.name
+                  }
                   className="max-w-6 rounded-2xl"
                 />
               )}
-              <span className="font-bold">{context.owner.display_name} </span>
+              {isPlaylist(context) && (
+                <span className="font-bold">{context.owner.display_name} </span>
+              )}
               <span>{context.tracks.total} songs </span>
             </div>
           </div>
@@ -82,17 +92,28 @@ export default async function PlaylistTemplate({
           </span>
         </div>
         <hr className="mb-4 mt-2 opacity-20" />
-        {context.tracks.items.map((item, index) => (
-          <Track
-            variant={"all"}
-            token={token}
-            key={item.track.id + item.track.album.id}
-            item={item.track}
-            added_at={item.added_at}
-            index={index}
-            playlist_uri={context.uri}
-          />
-        ))}
+        {isPlaylist(context)
+          ? context.tracks.items.map((item, index) => (
+              <Track
+                variant={"all"}
+                token={token}
+                key={item.track.id + item.track.album.id}
+                item={item.track}
+                added_at={item.added_at}
+                index={index}
+                playlist_uri={context.uri}
+              />
+            ))
+          : context.tracks.items.map((track, index: number) => (
+              <Track
+                variant="trackOnly"
+                token={token}
+                key={track.id}
+                item={track}
+                index={index}
+                playlist_uri={context.uri}
+              />
+            ))}
       </div>
     </div>
   );
