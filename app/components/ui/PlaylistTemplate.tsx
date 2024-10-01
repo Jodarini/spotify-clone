@@ -57,7 +57,7 @@ export default async function PlaylistTemplate({
         </div>
         <ListTopBar token={token} playlistUri={context.uri} />
       </div>
-      <div className="flex flex-col w-full text-sm text-zinc-400">
+      <div className="flex flex-col w-full text-sm text-zinc-400 p-5">
         <div className="text-zinc-400 grid grid-cols-[24px_minmax(200px,35%)_30%_20%_auto] max-w-full text-sm overflow-hidden gap-x-3 items-center text-left py-1 px-2 rounded max-h-16">
           <span className="w-full text-center">#</span>
           <span>Title</span>
