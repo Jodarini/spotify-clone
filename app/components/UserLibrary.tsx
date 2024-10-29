@@ -100,10 +100,10 @@ export default function UserLibrary({
       <div className="h-full overflow-y-scroll">
         <div
           onClick={(e) => handleClick(e, "playlist", "liked")}
-          className="w-full rounded from-white/0 to-white/5 py-2 hover:cursor-pointer hover:bg-gradient-to-r active:bg-black "
+          className="w-full rounded from-white/0 to-white/5 py-2 hover:cursor-pointer hover:bg-gradient-to-r active:bg-black"
         >
           <div className="flex w-full items-center justify-between overflow-hidden">
-            <div className="flex w-max flex-row items-center gap-3 overflow-hidden">
+            <div className="flex w-full flex-row items-center gap-3 overflow-hidden">
               <Image
                 src="https://misc.scdn.co/liked-songs/liked-songs-300.png"
                 alt="Image"
@@ -112,48 +112,34 @@ export default function UserLibrary({
                 className="max-w-12 rounded"
               />
               {isExpanded && (
-                <div className="flex flex-col overflow-hidden">
-                  <div
-                    className={`${currentTrackContext === "" ? `text-green` : ""} overflow-hidden text-ellipsis whitespace-nowrap`}
-                  >
-                    Liked Songs
+                <div className="flex justify-between items-center w-full">
+                  <div className="flex flex-col overflow-hidden">
+                    <div
+                      className={`${currentTrackContext === "" ? `text-green` : ""} overflow-hidden text-ellipsis whitespace-nowrap`}
+                    >
+                      Liked Songs
+                    </div>
+                    <div className="overflow-hidden text-sm capitalize text-gray-400 pr-4">
+                      Playlist
+                    </div>
                   </div>
-                  <div className="overflow-hidden text-sm capitalize text-gray-400 pr-4">
-                    Playlist
-                    {/* <span> */}
-                    {/*   {playlist.type} */}
-                    {/*   {" • "} */}
-                    {/*   {"owner" in playlist */}
-                    {/*     ? playlist.owner.display_name */}
-                    {/*     : playlist.artists.map((artist, index) => ( */}
-                    {/*         <span key={artist.id}> */}
-                    {/*           {artist.name} */}
-                    {/*           {playlist.artists.length > 1 && */}
-                    {/*             playlist.artists.length !== index + 1 && ( */}
-                    {/*               <>{", "}</> */}
-                    {/*             )} */}
-                    {/*         </span> */}
-                    {/*       ))} */}
-                    {/* </span> */}
-                  </div>
+                  {currentTrackContext === "" && (
+                    <div className="pr-3">
+                      <svg
+                        data-encore-id="icon"
+                        role="img"
+                        aria-hidden="true"
+                        className="inline w-4 fill-green text-gray-50/10"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M10.016 1.125A.75.75 0 0 0 8.99.85l-6.925 4a3.639 3.639 0 0 0 0 6.299l6.925 4a.75.75 0 0 0 1.125-.65v-13a.75.75 0 0 0-.1-.375zM11.5 5.56a2.75 2.75 0 0 1 0 4.88V5.56z"></path>
+                        <path d="M16 8a5.752 5.752 0 0 1-4.5 5.614v-1.55a4.252 4.252 0 0 0 0-8.127v-1.55A5.752 5.752 0 0 1 16 8z"></path>
+                      </svg>
+                    </div>
+                  )}
                 </div>
               )}
             </div>
-            {/* {isExpanded && */}
-            {/*   isCurrentlyPlaying(currentTrackContext, playlist.uri) && ( */}
-            {/*     <div> */}
-            {/*       <svg */}
-            {/*         data-encore-id="icon" */}
-            {/*         role="img" */}
-            {/*         aria-hidden="true" */}
-            {/*         className="inline w-4 fill-green text-gray-50/10" */}
-            {/*         viewBox="0 0 16 16" */}
-            {/*       > */}
-            {/*         <path d="M10.016 1.125A.75.75 0 0 0 8.99.85l-6.925 4a3.639 3.639 0 0 0 0 6.299l6.925 4a.75.75 0 0 0 1.125-.65v-13a.75.75 0 0 0-.1-.375zM11.5 5.56a2.75 2.75 0 0 1 0 4.88V5.56z"></path> */}
-            {/*         <path d="M16 8a5.752 5.752 0 0 1-4.5 5.614v-1.55a4.252 4.252 0 0 0 0-8.127v-1.55A5.752 5.752 0 0 1 16 8z"></path> */}
-            {/*       </svg> */}
-            {/*     </div> */}
-            {/*   )} */}
           </div>
         </div>
         {filterLibrary(userLibrary).map((playlist) => (
