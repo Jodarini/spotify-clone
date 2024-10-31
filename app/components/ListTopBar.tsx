@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuTrigger,
@@ -13,6 +14,7 @@ import {
   removeAlbumforCurrentUser,
   saveAlbumsForCurrentUser,
 } from "../api/spotify/spotify-api";
+import { usePathname, useRouter } from "next/navigation";
 
 export default function ListTopBar({
   playlistUri,
@@ -25,17 +27,23 @@ export default function ListTopBar({
   token: string;
   isInLibrary: boolean[];
 }) {
-  console.log(isInLibrary);
+  const [inLibrary, setInLibrary] = useState(isInLibrary[0]);
+  const router = useRouter();
+  const pathName = usePathname();
+  const isAlbum = pathName.includes("album");
+
   const addToLibrary = async () => {
+    setInLibrary(true);
     const contextId = playlistUri.split(":").splice(2);
     const res = await saveAlbumsForCurrentUser(token, contextId[0]);
-    console.log(res);
+    router.refresh();
   };
 
   const removeFromLibrary = async () => {
+    setInLibrary(false);
     const contextId = playlistUri.split(":").splice(2);
     const res = await removeAlbumforCurrentUser(token, contextId[0]);
-    console.log(res);
+    router.refresh();
   };
 
   return (
@@ -46,6 +54,47 @@ export default function ListTopBar({
         uris={uris}
         variant="GREEN"
       />
+      {isAlbum && (
+        <>
+          {inLibrary ? (
+            <button onClick={removeFromLibrary}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                stroke="currentColor"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                data-icon="SvgCheckCircle"
+                aria-hidden="true"
+              >
+                <path d="M8.5 13.1l1.05.95 1.05.95 2.45-3 2.45-3M12 3a9 9 0 11-6.364 2.636A8.972 8.972 0 0112 3z"></path>
+              </svg>
+            </button>
+          ) : (
+            <button onClick={addToLibrary}>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                stroke="currentColor"
+                fill="none"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                viewBox="0 0 24 24"
+                data-icon="SvgPlus"
+                aria-hidden="true"
+              >
+                <path d="M12 4v16m8-8H4"></path>
+              </svg>
+            </button>
+          )}
+        </>
+      )}
       <DropdownMenu>
         <DropdownMenuTrigger>
           <svg
@@ -54,9 +103,9 @@ export default function ListTopBar({
             height="24"
             stroke="currentColor"
             fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
             viewBox="0 0 24 24"
             data-icon="SvgMoreVertical"
             aria-hidden="true"
@@ -75,7 +124,6 @@ export default function ListTopBar({
               Add to Your Library
             </DropdownMenuItem>
           )}
-          <DropdownMenuItem>Add to queue</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Add to profile</DropdownMenuItem>
           <DropdownMenuSeparator />
