@@ -9,18 +9,37 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import ResumePausePlaybackButton from "./track/ResumePausePlaybackButton";
+import {
+  removeAlbumforCurrentUser,
+  saveAlbumsForCurrentUser,
+} from "../api/spotify/spotify-api";
 
 export default function ListTopBar({
   playlistUri,
   token,
   uris,
+  isInLibrary,
 }: {
   playlistUri?: string;
   uris?: string[];
   token: string;
+  isInLibrary: boolean[];
 }) {
+  console.log(isInLibrary);
+  const addToLibrary = async () => {
+    const contextId = playlistUri.split(":").splice(2);
+    const res = await saveAlbumsForCurrentUser(token, contextId[0]);
+    console.log(res);
+  };
+
+  const removeFromLibrary = async () => {
+    const contextId = playlistUri.split(":").splice(2);
+    const res = await removeAlbumforCurrentUser(token, contextId[0]);
+    console.log(res);
+  };
+
   return (
-    <div className="flex gap-4 items-center py-4">
+    <div className="flex items-center gap-4 py-4">
       <ResumePausePlaybackButton
         token={token}
         pagePlaylistURI={playlistUri}
@@ -47,7 +66,15 @@ export default function ListTopBar({
         </DropdownMenuTrigger>
         <DropdownMenuContent>
           {/* <DropdownMenuLabel>My Account</DropdownMenuLabel> */}
-          <DropdownMenuItem>Remove from Your Library</DropdownMenuItem>
+          {isInLibrary[0] ? (
+            <DropdownMenuItem onClick={removeFromLibrary}>
+              Remove from Your Library
+            </DropdownMenuItem>
+          ) : (
+            <DropdownMenuItem onClick={addToLibrary}>
+              Add to Your Library
+            </DropdownMenuItem>
+          )}
           <DropdownMenuItem>Add to queue</DropdownMenuItem>
           <DropdownMenuSeparator />
           <DropdownMenuItem>Add to profile</DropdownMenuItem>

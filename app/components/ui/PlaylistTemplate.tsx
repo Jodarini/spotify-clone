@@ -1,4 +1,4 @@
-import { getUser } from "@/app/api/spotify/spotify-api";
+import { checkUsersSavedAlbums, getUser } from "@/app/api/spotify/spotify-api";
 import { getMostCommonColor } from "@/app/lib/utils/getCommonColor";
 import { Album, Playlist } from "@/app/types/spotify";
 import Image from "next/image";
@@ -19,6 +19,7 @@ export default async function PlaylistTemplate({
   if (isPlaylist(context)) {
     owner = await getUser(context.owner.id);
   }
+  const isInLibrary = await checkUsersSavedAlbums(context.id);
 
   return (
     <div className="flex flex-col overflow-x-hidden overflow-y-scroll">
@@ -73,7 +74,11 @@ export default async function PlaylistTemplate({
             </div>
           </div>
         </div>
-        <ListTopBar token={token} playlistUri={context.uri} />
+        <ListTopBar
+          token={token}
+          playlistUri={context.uri}
+          isInLibrary={isInLibrary}
+        />
       </div>
       <div className="flex flex-col w-full text-sm text-zinc-400 p-5">
         <div className="text-zinc-400 grid grid-cols-[24px_minmax(200px,35%)_30%_20%_auto] max-w-full text-sm overflow-hidden gap-x-3 items-center text-left py-1 px-2 rounded max-h-16">

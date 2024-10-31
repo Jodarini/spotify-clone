@@ -1,5 +1,8 @@
 import { getToken } from "@/app/api/clerk/getToken";
-import { getTracks } from "@/app/api/spotify/spotify-api";
+import {
+  checkUsersSavedAlbums,
+  getTracks,
+} from "@/app/api/spotify/spotify-api";
 import ListTopBar from "@/app/components/ListTopBar";
 import Track from "@/app/components/track/Track";
 import { getMostCommonColor } from "@/app/lib/utils/getCommonColor";
@@ -12,6 +15,7 @@ export default async function Page() {
   const contextColor = await getMostCommonColor(
     "https://misc.scdn.co/liked-songs/liked-songs-300.png",
   );
+  const isInLibrary = await checkUsersSavedAlbums(uris[0]);
 
   return (
     <div
@@ -53,7 +57,7 @@ export default async function Page() {
         </div>
       </div>
       <div className="flex flex-col w-full text-sm text-zinc-400">
-        <ListTopBar token={token} uris={uris} />
+        <ListTopBar token={token} uris={uris} isInLibrary={isInLibrary} />
         <div className="text-zinc-400 grid grid-cols-[24px_minmax(200px,35%)_30%_20%_auto] max-w-full text-sm overflow-hidden gap-x-3 items-center text-left py-1 px-2 rounded max-h-16">
           <span className="w-full text-center">#</span>
           <span>Title</span>
