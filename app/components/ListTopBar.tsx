@@ -66,13 +66,14 @@ export default function ListTopBar({
                 fill="none"
                 strokeLinecap="round"
                 strokeLinejoin="round"
-                strokeWidth="2"
+                strokeWidth="3"
                 viewBox="0 0 24 24"
-                data-icon="SvgCheckCircle"
+                data-icon="SvgCheck"
                 aria-hidden="true"
+                className="rounded-full p-1 bg-green text-black"
               >
-                <path d="M8.5 13.1l1.05.95 1.05.95 2.45-3 2.45-3M12 3a9 9 0 11-6.364 2.636A8.972 8.972 0 0112 3z"></path>
-              </svg>
+                <path d="M3 14.7l2.7 2.45 2.7 2.45 6.3-7.6L21 4.4"></path>
+              </svg>{" "}
             </button>
           ) : (
             <button onClick={addToLibrary}>
