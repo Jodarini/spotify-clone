@@ -1,14 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import {
-  DropdownMenu,
-  DropdownMenuTrigger,
-  DropdownMenuContent,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuItem,
-} from "@/components/ui/dropdown-menu";
 import ResumePausePlaybackButton from "./track/ResumePausePlaybackButton";
 import {
   removeAlbumforCurrentUser,
@@ -65,7 +57,11 @@ export default function ListTopBar({
           {inLibrary ? (
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger onClick={removeFromLibrary}>
+                <TooltipTrigger
+                  onClick={() => {
+                    removeFromLibrary();
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"
@@ -91,7 +87,11 @@ export default function ListTopBar({
           ) : (
             <TooltipProvider>
               <Tooltip>
-                <TooltipTrigger onClick={addToLibrary}>
+                <TooltipTrigger
+                  onClick={() => {
+                    addToLibrary();
+                  }}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="24"

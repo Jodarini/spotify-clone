@@ -14,15 +14,15 @@ import {
   CurrentUserPlaylists,
   FeaturedPlaylist,
   GetCurrentlyPlayingTrackResponse,
-  Track,
-  Tracks,
   GetTracks,
 } from "@/app/types/spotify";
 import { getToken } from "../clerk/getToken";
 
-export const fetchWebApi = async (url: string) => {
+export const fetchWebApi = async (url: string, token?: string) => {
   try {
-    const token = await getToken();
+    if (!token) {
+      token = await getToken();
+    }
     if (!token) {
       console.error("No token available for API request");
       return null;
@@ -427,8 +427,38 @@ export async function removeAlbumforCurrentUser(
   );
 }
 
+export async function saveTrackForCurrentUser(id: string, token: string) {
+  return fetchPlayerApi(
+    `https://api.spotify.com/v1/me/tracks?ids=${id}`,
+    token,
+    undefined,
+    undefined,
+    undefined,
+    id,
+  );
+}
+
+export async function removeUsersSavedTracks(trackIds: string, token: string) {
+  return deletePlayerApi(
+    `https://api.spotify.com/v1/me/tracks?ids=${trackIds}`,
+    token,
+    trackIds,
+  );
+}
+
 export async function checkUsersSavedAlbums(ids: string): Promise<boolean[]> {
   return fetchWebApi(
     `https://api.spotify.com/v1/me/albums/contains?ids=${ids}`,
+  );
+}
+
+export async function checkUsersSavedTracks(
+  token: string,
+  ids: string[],
+): Promise<boolean[]> {
+  const trackIds = ids.join(",");
+  return fetchWebApi(
+    `https://api.spotify.com/v1/me/tracks/contains?ids=${trackIds}`,
+    token,
   );
 }
