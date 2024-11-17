@@ -42,7 +42,7 @@ export default async function Page() {
               item={item.track}
               index={index}
               uris={recentTracksUris}
-              variant="trackOnly"
+              variant="minimal"
             />
           ))}
         </div>

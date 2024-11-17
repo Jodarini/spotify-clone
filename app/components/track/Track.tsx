@@ -29,7 +29,7 @@ interface TrackProps {
   playlist_uri?: string;
   uris?: string[];
   added_at?: string;
-  variant: "trackOnly" | "trackAndDescription" | "all";
+  variant: "trackOnly" | "trackAndDescription" | "all" | "minimal";
   isLiked?: boolean;
 }
 export default function Track({
@@ -40,11 +40,12 @@ export default function Track({
   uris,
   added_at,
   variant,
-  isLiked,
+  isLiked: liked,
 }: TrackProps) {
   const { deviceId, user } = useContext(DeviceContext);
   const { current_track } = useContext(PlayerContext);
   const [isHover, setIsHover] = useState(false);
+  const [isLiked, setIsLiked] = useState(liked);
   const pathName = usePathname();
   const router = useRouter();
 
@@ -74,11 +75,11 @@ export default function Track({
   const compVariant = () => {
     if (variant === "trackOnly") {
       return "grid-cols-[24px_minmax(200px,95%)_auto]";
-    }
-    if (variant === "trackAndDescription") {
+    } else if (variant === "minimal") {
+      return "grid-cols-[24px_minmax(200px,95%)_auto] bg-[#fafafa10]";
+    } else if (variant === "trackAndDescription") {
       return "grid-cols-[24px_minmax(200px,55%)_35%_auto]";
-    }
-    if (variant === "all") {
+    } else if (variant === "all") {
       return "grid-cols-[24px_minmax(200px,35%)_30%_20%_auto]";
     }
   };
@@ -89,12 +90,16 @@ export default function Track({
   const notOnAlbum = !pathName.includes("/album/");
 
   const saveToLikedSongs = async () => {
+    setIsLiked(true);
     const res = await saveTrackForCurrentUser(item.id, token);
+    console.log(res);
     router.refresh();
   };
 
   const removeFromLikedSongs = async () => {
+    setIsLiked(true);
     const res = await removeUsersSavedTracks(item.id, token);
+    console.log(res);
     router.refresh();
   };
 
@@ -190,7 +195,7 @@ export default function Track({
           </div>
         </div>
 
-        {!(variant === "trackOnly") && (
+        {!(variant === "trackOnly" || "minimal") && (
           <>
             <Link href={`/album/${item.album?.id}`} className="text-xs">
               <div className="overflow-hidden text-ellipsis whitespace-nowrap text-zinc-400 hover:text-white hover:underline">
