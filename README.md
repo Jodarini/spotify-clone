@@ -31,6 +31,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 - [x] Currently playing track tab title.
 - [x] Play button for playlist component.
 - [x] Play button for playlist page.
+- [ ] Fix album list ui (show headers only when used).
+- [ ] Fix save to liked songs button not updating after a request success (album, etc).
+- [ ] Fix spacing on Your Library for currently playing status icon.
 - [ ] Play button for album page.
 - [ ] Sort by options to user library.
 - [ ] Filtering options for search page.
