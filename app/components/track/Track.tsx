@@ -92,7 +92,6 @@ export default function Track({
   const saveToLikedSongs = async () => {
     setIsLiked(true);
     const res = await saveTrackForCurrentUser(item.id, token);
-    console.log(res);
     router.refresh();
   };
 

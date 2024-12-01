@@ -58,11 +58,14 @@ export default function UserLibrary({
         return playlist.name.toLowerCase().includes(searchInput);
       });
     }
-    return library.filter(
-      (playlist) =>
+    return library.filter((playlist) => {
+      if (!playlist) return;
+
+      return (
         playlist.name.toLowerCase().includes(searchInput) &&
-        playlist.type === filterLibraryType,
-    );
+        playlist.type === filterLibraryType
+      );
+    });
   };
 
   return (

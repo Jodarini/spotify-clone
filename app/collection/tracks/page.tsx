@@ -19,7 +19,6 @@ export default async function Page() {
     "https://misc.scdn.co/liked-songs/liked-songs-300.png",
   );
   const likedSongs = await checkUsersSavedTracks(token, ids);
-  console.log(likedSongs);
 
   return (
     <div
