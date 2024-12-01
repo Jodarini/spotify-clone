@@ -52,10 +52,12 @@ export default function UserLibrary({
   };
 
   const filterLibrary = (library: (CurrentUserPlaylist | Album)[]) => {
+    console.log(library);
     if (filterLibraryType === "all") {
-      return library.filter((playlist) =>
-        playlist.name.toLowerCase().includes(searchInput),
-      );
+      return library.filter((playlist) => {
+        if (!playlist) return;
+        return playlist.name.toLowerCase().includes(searchInput);
+      });
     }
     return library.filter(
       (playlist) =>
