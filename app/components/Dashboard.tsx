@@ -11,6 +11,7 @@ export default async function Dashboard() {
   let albums = await getUsersAlbums();
 
   let library: Array<CurrentUserPlaylist | Album> = [...playlists];
+  if (!albums?.items) return;
   albums?.items.forEach(({ album }) => {
     library.push(album);
   });
