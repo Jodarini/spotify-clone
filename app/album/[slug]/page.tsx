@@ -1,4 +1,3 @@
-import { getToken } from "@/app/api/clerk/getToken";
 import {
   checkUsersSavedAlbums,
   getAlbum,
@@ -10,13 +9,12 @@ export default async function Page({ params }: { params: { slug: string } }) {
   const currentUser = await getCurrentUser();
   const album = await getAlbum(params.slug, currentUser!.country);
   let isInLibrary: boolean[] = [false];
-  if (album) {
-    isInLibrary = await checkUsersSavedAlbums(album.id);
-  }
 
   if (!album) {
     return <div>No album found</div>;
   }
+
+  isInLibrary = await checkUsersSavedAlbums(album.id);
 
   return <PlaylistTemplate context={album} />;
 }
