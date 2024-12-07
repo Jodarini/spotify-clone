@@ -18,6 +18,42 @@ import {
 } from "@/app/types/spotify";
 import { getToken } from "../clerk/getToken";
 
+export const nfetchWebApi = async (url: string, options: RequestInit = {}) => {
+  try {
+    const token = await getToken();
+    if (!token) {
+      console.error("No token available for API request");
+      return null;
+    }
+
+    const response = await fetch(url, {
+      ...options,
+      headers: {
+        ...options.headers,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error(
+        `API request failed with status ${response.status}: ${response.statusText}`,
+      );
+    }
+
+    const text = await response.text();
+    try {
+      return JSON.parse(text);
+    } catch (parseError) {
+      console.error("Error parsing JSON:", parseError);
+      console.error("Raw response:", text);
+      throw new Error("Invalid JSON response from API");
+    }
+  } catch (error) {
+    console.error("Error in fetchWebApi:", error);
+    throw error;
+  }
+};
+
 export const fetchWebApi = async (url: string, token?: string) => {
   try {
     if (!token) {
@@ -60,13 +96,6 @@ export const fetchWebApi2 = async (url: string) => {
   const res = await fetch(url, requestOptions);
   return res;
 };
-
-export async function skipToPrev(token: string) {
-  return postPlayerApi(`https://api.spotify.com/v1/me/player/previous`, token);
-}
-export async function skipToNext(token: string) {
-  return postPlayerApi(`https://api.spotify.com/v1/me/player/next`, token);
-}
 
 export const postPlayerApi = async (url: string, token: string) => {
   if (!token) {
@@ -229,6 +258,13 @@ export const pausePlayerApi = async (url: string, token: string) => {
   const res = await fetch(url, requestOptions);
   return res;
 };
+
+export async function skipToPrev(token: string) {
+  return postPlayerApi(`https://api.spotify.com/v1/me/player/previous`, token);
+}
+export async function skipToNext(token: string) {
+  return postPlayerApi(`https://api.spotify.com/v1/me/player/next`, token);
+}
 
 export async function getDevice() {
   return fetchWebApi2(`https://api.spotify.com/v1/me/player?market=ES`);
